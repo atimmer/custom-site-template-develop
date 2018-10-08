@@ -20,13 +20,13 @@ touch ${VVV_PATH_TO_SITE}/log/access.log
 
 # Install and configure the latest stable version of WordPress
 if [[ ! -f "${VVV_PATH_TO_SITE}/public_html/src/wp-load.php" ]]; then
-  echo "Checking out WordPress trunk. See https://develop.svn.wordpress.org/trunk"
-  noroot svn checkout "https://develop.svn.wordpress.org/trunk/" "${VVV_PATH_TO_SITE}/public_html"
+  echo "Checking out WordPress 5.0. See https://develop.svn.wordpress.org/branches/5.0"
+  noroot svn checkout "https://develop.svn.wordpress.org/branches/5.0/" "${VVV_PATH_TO_SITE}/public_html"
   cd "${VVV_PATH_TO_SITE}/public_html"
   noroot npm install
 else
   cd "${VVV_PATH_TO_SITE}/public_html"
-  echo "Updating WordPress trunk. See https://develop.svn.wordpress.org/trunk"
+  echo "Updating WordPress 5.0. See https://develop.svn.wordpress.org/branches/5.0"
   if [[ -e .svn ]]; then
     noroot svn up
   else
@@ -42,7 +42,7 @@ fi
 
 if [[ ! -f "${VVV_PATH_TO_SITE}/public_html/wp-config.php" ]]; then
   cd "${VVV_PATH_TO_SITE}/public_html"
-  echo "Configuring WordPress trunk..."
+  echo "Configuring WordPress 5.0..."
   noroot wp core config --dbname="${DB_NAME}" --dbuser=wp --dbpass=wp --quiet --path="${VVV_PATH_TO_SITE}/public_html/src" --extra-php <<PHP
 define( 'WP_DEBUG', true );
 define( 'SCRIPT_DEBUG', true );
@@ -53,7 +53,7 @@ fi
 
 if ! $(noroot wp core is-installed --path="${VVV_PATH_TO_SITE}/public_html/src"); then
   cd ${VVV_PATH_TO_SITE}
-  echo "Installing WordPress trunk..."
+  echo "Installing WordPress 5.0..."
 
   if [ "${WP_TYPE}" = "subdomain" ]; then
     INSTALL_COMMAND="multisite-install --subdomains"
